@@ -1,0 +1,155 @@
+﻿@section breadCrumbs{
+    <span>Merchandise/Add Product</span>
+}
+@section page{
+    <span>Merchandise</span>
+}
+@model MerchandiseViewModel
+<div class="card m-b-30">
+    <div class="card-body">
+        <h4 class="mt-0 header-title">Update the Product</h4>
+        <p class="text-muted m-b-30 font-14">
+            warning: please enter Product data correctly
+        </p>
+        <form id="formUpdate">
+            <input style="display:none" type="text" id="id" value="@Model.Id">
+            <input style="display:none" type="text" id="sellerNumber" value="@Model.SellerNumber">
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label">Name <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input type="text" id="name" class="form-control" value="@Model.ProductName" required>
+                    <div class="invalid-feedback name">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label">Category <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input type="text" id="category" class="form-control" value="@Model.Category" required>
+                    <div class="invalid-feedback category">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="description" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-6">
+                    <textarea id="description" class="form-control" rows="6">@Model.Description</textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="price" class="col-sm-2 col-form-label">Price <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input type="number" id="price" class="form-control" value="@Model.Price.ToString().TrimEnd('0').TrimEnd(',')">
+                    <div class="invalid-feedback price">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="discontinue" class="col-sm-2 col-form-label">Discontinue</label>
+                <div class="col-sm-4">
+                    <input type="checkbox" id="discontinue" @(Model.Discontinue ? "checked disabled" : "")>
+                </div>
+            </div>
+            <button type="submit" id="btnUpdate" class="btn btn-info waves-effect waves-light">
+                Save
+            </button>
+            <a asp-action="Index" asp-controller="Merchandise" class="btn btn-danger waves-effect m-l-5">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+<script>
+    (function () {
+        updateProduct();
+    }())
+    function updateProduct() {
+        let token = localStorage.getItem("token");
+        let form = document.querySelector("#formUpdate");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            //DOM untuk mengambil value dari inputan
+            let name = document.querySelector("#name");
+            let category = document.querySelector("#category");
+            let description = document.querySelector("#description");
+            let price = document.querySelector("#price");
+            let discontinue = document.querySelector("#discontinue");
+            let sellerNumber = document.querySelector("#sellerNumber");
+            let id = document.querySelector("#id");
+            //DOM untuk hendle Response error
+            let errorname = document.querySelector(".name");
+            let errorcategory = document.querySelector(".category");
+            let errordescription = document.querySelector(".description");
+            let errorprice = document.querySelector(".price");
+            let errordiscontinue = document.querySelector(".discontinue");
+
+            //button
+            let button = document.querySelector("#btnUpdate");
+            data = {
+                "id":id.value,
+                "productName": name.value.trim() !== '' ? name.value : null,
+                "category": category.value.trim() !== '' ? category.value : null,
+                "price": price.value.trim() !== '' ? price.value : null,
+                "description": description.value.trim() !== '' ? description.value : null,
+                "discontinue": discontinue.checked ? true : false,
+                "sellerNumber": sellerNumber.value,
+            }
+            console.log(data);
+            let url = `http://localhost:5201/Api/v1/Product`;
+            let request = new XMLHttpRequest();
+            request.open('PUT', url);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader('Authorization', `Bearer ${token}`);
+            button.setAttribute('disable', 'disabled');
+            button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+            request.send(JSON.stringify(data));
+            request.onload = () => {
+                button.removeAttribute('disable');
+                button.innerHTML = 'Info';
+                let result = JSON.parse(request.response);
+                if (result.errors) {
+                    if (result.errors.ProductName) {
+                        name.classList.add("is-invalid");
+                        errorname.textContent = result.errors.ProductName;
+                    } else {
+                        name.classList.remove("is-invalid");
+                        errorname.textContent = "";
+                    }
+                    if (result.errors.Category) {
+                        category.classList.add("is-invalid");
+                        errorcategory.textContent = result.errors.Category;
+                    } else {
+                        category.classList.remove("is-invalid");
+                        errorcategory.textContent = "";
+                    }
+                    if (result.errors.Price) {
+                        price.classList.add("is-invalid");
+                        errorprice.textContent = result.errors.Price;
+                    } else {
+                        price.classList.remove("is-invalid");
+                        errorprice.textContent = "";
+                    }
+                    if (result.errors.Description) {
+                        description.classList.add("is-invalid");
+                        errordescription.textContent = result.errors.Description;
+                    } else {
+                        description.classList.remove("is-invalid");
+                        errordescription.textContent = "";
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Succes',
+                        text: result.message
+
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = `http://localhost:5115/Merchandise/`;
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+</script>

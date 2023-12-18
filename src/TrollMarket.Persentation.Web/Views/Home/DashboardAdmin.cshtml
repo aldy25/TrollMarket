@@ -1,0 +1,75 @@
+﻿@section breadCrumbs{
+    <span>Dashboard</span>
+}
+@section page{
+    <span>Dashboard</span>
+}
+
+@model HomeAdminViewModel
+<div class="card m-b-30">
+    <div class="card-body">
+        <div class="button-items mt-2 mb-4">
+            <a style="color:white" class="btn btn-info">All Transaction</a>
+        </div>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var isLoggedIn = @Html.Raw(Json.Serialize(ViewData["ShowNotification"]));
+        if (isLoggedIn) {
+
+            let timerInterval;
+            Swal.fire({
+                title: "<h5 style='color:red'>you may not access the login page, because you are already logged in!</h5>",
+                html: "I will close in <b></b> milliseconds.",
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log("I was closed by the timer");
+                }
+            });
+        }
+        var orderDates = [];
+        var nettAmounts = [];
+
+    @foreach (var item in Model.Histories)
+    {
+        <text>
+                orderDates.push('@item.OrderDate.ToString("yyyy-MM-dd")');
+            var price = parseFloat('@item.TotalPrice');
+            nettAmounts.push(price);
+        </text>
+    }
+                var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: orderDates,
+                datasets: [
+                    {
+                        label: 'Nett Amount',
+                        data: nettAmounts,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+            },
+            options: {
+            }
+        });
+    }());
+</script>

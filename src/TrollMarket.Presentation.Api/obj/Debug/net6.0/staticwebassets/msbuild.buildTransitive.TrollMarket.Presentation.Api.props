@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\TrollMarket.Presentation.Api.props" />
+</Project>

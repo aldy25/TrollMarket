@@ -1,0 +1,470 @@
+﻿@section breadCrumbs{
+    <span>Shipper</span>
+}
+@section page{
+    <span>Shipper</span>
+}
+@model ShipperIndexViewModel
+
+<div class="card m-b-30">
+    <div class="card-body">
+        <div class="button-items mt-2 mb-4">
+            <a style="color:white" data-toggle="modal" data-target="#modaltambah" type="button" class="btn btn-info waves-effect waves-light">Add New Shipment</a>
+        </div>
+        <div class="mt-2 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="1">No</t>
+                        <th>Action</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Service</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var no = 1;
+                    }
+                    @foreach (var row in Model.Shippers)
+                    {
+                        <tr>
+                            <td>
+                                @no
+                            </td>
+                            <td>
+                                <button style="color:white" onclick="edit('@row.ShipperNumber')" type="button" id="btnEdit" class="btn btn-primary">Edit</button>
+                                <button style="color:white" onclick="remove('@row.ShipperNumber')" type="button" class="btn btn-danger">Delete</button>
+                                <button style="color:white" onclick="stopService('@row.ShipperNumber')" type="button" class="btn btn-secondary" @(row.Service ? "" : "disabled")>Stop Service</button>
+                            </td>
+                            <td>
+                                @row.ShipperName
+                            </td>
+                            <td>
+                                @(row.Price.ToString("C"))
+                            </td>
+                            <td>
+                                @(row.Service ? "Yes" : "No")
+                            </td>
+                        </tr>
+                        no++;
+                    }
+
+                </tbody>
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+
+                    @if (Model.Pagination.PageNumber == 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new { page = Model.Pagination.PageNumber - 1})">Previous</a>
+                        </li>
+                    }
+
+                    @for (int a = 1; a <= Model.Pagination.TotalPages; a++)
+                    {
+                        if (a == Model.Pagination.PageNumber)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    @a
+                                </span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("index",new { page = a})">@a</a></li>
+                        }
+                    }
+                    @if (Model.Pagination.PageNumber == Model.Pagination.TotalPages)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new {  page = Model.Pagination.PageNumber + 1})">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@*start modal Insert*@
+<div class="modal fade" id="modaltambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog zoomIn animated modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Shippment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formInsert">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="name" required>
+                            <div class="invalid-feedback name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="price" class="col-sm-2 col-form-label">Price </label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="price" required>
+                            <div class="invalid-feedback price">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="service" class="col-sm-2 col-form-label">Service</label>
+                        <div class="col-sm-4">
+                            <input type="checkbox" id="service">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnInsert">Tambah</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@*end model*@
+
+
+@*start modal Update*@
+<div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog zoomIn animated modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Shippment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formInsert">
+                <input style="display:none" type="text" class="form-control" id="shipperNumber">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="nameedit" required>
+                            <div class="invalid-feedback nameedit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="price" class="col-sm-2 col-form-label">Price </label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="priceedit" required>
+                            <div class="invalid-feedback priceedit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="service" class="col-sm-2 col-form-label">Service</label>
+                        <div class="col-sm-4">
+                            <input type="checkbox" id="serviceedit">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnUpdate">Tambah</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@*end model*@
+
+<script>
+    (function () {
+        insertShipper();
+        Update();
+    }());
+    function insertShipper() {
+        let token = localStorage.getItem("token");
+        let form = document.querySelector("#formInsert");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            //DOM untuk mengambil value dari inputan
+            let name = document.querySelector("#name");
+            let price = document.querySelector("#price");
+            let service = document.querySelector("#service");
+            //DOM untuk hendle Response error
+            let errorname = document.querySelector(".name");
+            let errorprice = document.querySelector(".price");
+            //button
+            let button = document.querySelector("#btnInsert");
+            data = {
+                "shipperName": name.value.trim() !== '' ? name.value : null,
+                "price": price.value.trim() !== '' ? price.value : null,
+                "service": service.checked ? true : false,
+            }
+            let url = `http://localhost:5201/Api/v1/Shipper`;
+            let request = new XMLHttpRequest();
+            request.open('POST', url);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader('Authorization', `Bearer ${token}`);
+            button.setAttribute('disable', 'disabled');
+            button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+            request.send(JSON.stringify(data));
+            request.onload = () => {
+                button.removeAttribute('disable');
+                button.innerHTML = 'Tambah';
+                let result = JSON.parse(request.response);
+                if (result.errors) {
+                    if (result.errors.ShipperName) {
+                        name.classList.add("is-invalid");
+                        errorname.textContent = result.errors.ShipperName;
+                    } else {
+                        name.classList.remove("is-invalid");
+                        errorname.textContent = "";
+                    }
+                    if (result.errors.Price) {
+                        price.classList.add("is-invalid");
+                        errorprice.textContent = result.errors.Price;
+                    } else {
+                        price.classList.remove("is-invalid");
+                        errorprice.textContent = "";
+                    }
+                } else {
+                    $('#modaltambah').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Succes',
+                        text: result.message
+
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.reset();
+                            location.reload();
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+    function Update() {
+        let token = localStorage.getItem("token");
+        let form = document.querySelector("#modalUpdate");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            //DOM untuk mengambil value dari inputan
+            
+            let shipperNumber = document.querySelector("#shipperNumber");
+            let name = document.querySelector("#nameedit");
+            let price = document.querySelector("#priceedit");
+            let service = document.querySelector("#serviceedit");
+            //DOM untuk hendle Response error
+            let errornameedit = document.querySelector(".nameedit");
+            let errorpriceedit = document.querySelector(".priceedit");
+            //button
+            let button = document.querySelector("#btnUpdate");
+            data = {
+                "ShipperNumber": shipperNumber.value.trim() !== '' ? shipperNumber.value : null,
+                "ShipperName": name.value.trim() !== '' ? name.value : null,
+                "Price": price.value.trim() !== '' ? price.value : null,
+                "Service": service.checked ? true : false,
+            }
+            let url = `http://localhost:5201/Api/v1/Shipper`;
+            let request = new XMLHttpRequest();
+            request.open('PUT', url);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader('Authorization', `Bearer ${token}`);
+            button.setAttribute('disable', 'disabled');
+            button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+            request.send(JSON.stringify(data));
+            request.onload = () => {
+                button.removeAttribute('disable');
+                button.innerHTML = 'Tambah';
+                let result = JSON.parse(request.response);
+                if (result.errors) {
+                    if (result.errors.ShipperName) {
+                        nameedit.classList.add("is-invalid");
+                        errornameedit.textContent = result.errors.ShipperName;
+                    } else {
+                        nameedit.classList.remove("is-invalid");
+                        errornameedit.textContent = "";
+                    }
+                    if (result.errors.Price) {
+                        priceedit.classList.add("is-invalid");
+                        errorpriceedit.textContent = result.errors.Price;
+                    } else {
+                        priceedit.classList.remove("is-invalid");
+                        errorpriceedit.textContent = "";
+                    }
+                } else {
+                   
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Succes',
+                        text: result.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $('#modalUpdate').modal('hide');
+                    location.reload();
+                }
+            }
+
+        });
+    }
+    function edit(shipperNumber) {
+        let token = localStorage.getItem("token");
+        let button = document.querySelector("#btnEdit");
+        let request = new XMLHttpRequest();
+        let url = `http://localhost:5201/Api/v1/Shipper/CheckAvailableUpdateShipment/${shipperNumber}`;
+        request.open('GET', url);
+        request.setRequestHeader('Authorization', `Bearer ${token}`);
+        request.send();
+        button.setAttribute('disable', 'disabled');
+        button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+        request.onload = () => {
+            button.removeAttribute('disable');
+            button.innerHTML = 'Edit';
+            let result = JSON.parse(request.response);
+            if (result.error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed",
+                    text: result.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            } else {
+                showModalEdit(shipperNumber);
+            }
+        }
+    }
+    function showModalEdit(shipperNumber) {
+        let token = localStorage.getItem("token");
+        $('#modalUpdate').modal('show');
+        //DOM untuk mengambil value dari inputan
+        let shipNumber = document.querySelector("#shipperNumber");
+        let name = document.querySelector("#nameedit");
+        let price = document.querySelector("#priceedit");
+        let service = document.querySelector("#serviceedit");
+        let request = new XMLHttpRequest();
+        let url = `http://localhost:5201/Api/v1/Shipper/${shipperNumber}`;
+        request.open('GET', url);
+        request.setRequestHeader('Authorization', `Bearer ${token}`);
+        request.send();
+        request.onload = () => {
+            let result = JSON.parse(request.response);
+            shipNumber.value = result.detail.shipperNumber;
+            name.value = result.detail.shipperName;
+            price.value = result.detail.price;
+            if (result.detail.service) {
+                service.setAttribute('checked', '');
+            }
+
+        }
+    }
+    function remove(shipperNumber) {
+        let token = localStorage.getItem("token");
+        Swal.fire({
+            title: 'Shipper',
+            text: `are you sure deleting this Shipment ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#072DD6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ya',
+            cancelButtonText: 'tidak',
+        }).then((result) => {
+            if (result.value) {
+                let request = new XMLHttpRequest();
+                request.open("DELETE", `http://localhost:5201/Api/v1/Shipper/${shipperNumber}`);
+                request.setRequestHeader('Authorization', `Bearer ${token}`);
+                request.send();
+                request.onload = () => {
+                    let result = JSON.parse(request.response);
+                    console.log(result);
+                    if (result.error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed",
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Succes',
+                            text: result.message
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+    function stopService(shipperNumber) {
+        let token = localStorage.getItem("token");
+        Swal.fire({
+            title: 'Shipper',
+            text: `are you sure Stop Service this Shipment ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#072DD6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ya',
+            cancelButtonText: 'tidak',
+        }).then((result) => {
+            if (result.value) {
+                let url = `http://localhost:5201/Api/v1/Shipper/${shipperNumber}`;
+                let request = new XMLHttpRequest();
+                request.open('PATCH', url);
+                request.setRequestHeader("Content-Type", "application/json");
+                request.setRequestHeader('Authorization', `Bearer ${token}`);
+                request.send();
+                request.onload = () => {
+                    let result = JSON.parse(request.response);
+                    if (result.error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed",
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Succes',
+                            text: result.message
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+</script>

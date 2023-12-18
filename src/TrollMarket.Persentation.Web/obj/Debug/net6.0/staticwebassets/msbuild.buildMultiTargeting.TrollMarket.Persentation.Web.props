@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\TrollMarket.Persentation.Web.props" />
+</Project>

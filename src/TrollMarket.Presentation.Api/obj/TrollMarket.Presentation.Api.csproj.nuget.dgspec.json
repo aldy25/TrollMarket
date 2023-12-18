@@ -1,0 +1,218 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Presentation.Api\\TrollMarket.Presentation.Api.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Business\\TrollMarket.Business.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Business\\TrollMarket.Business.csproj",
+        "projectName": "TrollMarket.Business",
+        "projectPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Business\\TrollMarket.Business.csproj",
+        "packagesPath": "C:\\Users\\1903\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Business\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\1903\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.DataAcces\\TrollMarket.DataAcces.csproj": {
+                "projectPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.DataAcces\\TrollMarket.DataAcces.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.DataAcces\\TrollMarket.DataAcces.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.DataAcces\\TrollMarket.DataAcces.csproj",
+        "projectName": "TrollMarket.DataAcces",
+        "projectPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.DataAcces\\TrollMarket.DataAcces.csproj",
+        "packagesPath": "C:\\Users\\1903\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.DataAcces\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\1903\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlserver": {
+              "target": "Package",
+              "version": "[7.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.13, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Presentation.Api\\TrollMarket.Presentation.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Presentation.Api\\TrollMarket.Presentation.Api.csproj",
+        "projectName": "TrollMarket.Presentation.Api",
+        "projectPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Presentation.Api\\TrollMarket.Presentation.Api.csproj",
+        "packagesPath": "C:\\Users\\1903\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Presentation.Api\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\1903\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Business\\TrollMarket.Business.csproj": {
+                "projectPath": "C:\\Users\\Public\\Fremwork.net\\Aldy Nifratama\\Aldy Nifratama_Troll Market_BC40\\TrollMarket\\src\\TrollMarket.Business\\TrollMarket.Business.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.13, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,213 @@
+﻿@section breadCrumbs{
+    <span>My Cart</span>
+}
+@section page{
+    <span>Cart</span>
+}
+@model CartIndexViewModel
+
+<div class="card m-b-30">
+    <div class="card-body">
+        <div class="button-items mt-2 mb-4">
+            <a style="color:white" id="buttonTransaction" onclick="addTransaction('@Model.BuyerNumber')" type="button" class="btn btn-info waves-effect waves-light">Purchase All</a>
+            <span style="color:red">
+                @((Model.Balance >= Model.TotalAmount) ? "" : "Your balance is insufficient to purchase all products")
+            
+            </span>
+        </div>
+        <div class="mt-2 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="1">No</t>
+                        <th>Action</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Shipment</th>
+                        <th>Seller</th>
+                        <th>TotalPrice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var no = 1;
+                    }
+                    @foreach (var row in Model.Carts)
+                    {
+                        <tr>
+                            <td>
+                                @no
+                            </td>
+                            <td>
+                                <button style="color:white" onclick="remove(@row.Cart.ProductId,'@row.Cart.BuyerNumber','@row.Cart.ShipperNumber')" type="button" class="btn btn-danger">Remove</button>
+                            </td>
+                            <td>
+                                @row.ProductName
+                            </td>
+                            <td>
+                                @row.Cart.Quantity
+                            </td>
+                            <td>
+                                @row.Shipment
+                            </td>
+                            <td>
+                                @row.SellerName
+                            </td>
+                            <td>
+                                @(row.TotalPrice.ToString("C"))
+                            </td>
+                        </tr>
+                        no++;
+                    }
+
+                </tbody>
+                <tfoot>
+                    <td></td>
+                    <td>Balance</td>
+                <td style="@((Model.Balance >= Model.TotalAmount)? "color:#40a4f1" : "color:orangered" )">@Model.Balance.ToString("C")</td>
+                    <td></td>
+                    <td></td>
+                    <td>Total</td>
+                    <td style="color:orangered">@Model.TotalAmount.ToString("C")</td>
+                </tfoot>
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+
+                    @if (Model.Pagination.PageNumber == 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new { page = Model.Pagination.PageNumber - 1})">Previous</a>
+                        </li>
+                    }
+
+                    @for (int a = 1; a <= Model.Pagination.TotalPages; a++)
+                    {
+                        if (a == Model.Pagination.PageNumber)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    @a
+                                </span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("index",new { page = a})">@a</a></li>
+                        }
+                    }
+                    @if (Model.Pagination.PageNumber == Model.Pagination.TotalPages)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new {  page = Model.Pagination.PageNumber + 1})">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script>
+    function addTransaction(buyerNumber){
+        let token = localStorage.getItem("token");
+        let button = document.querySelector("#buttonTransaction");
+        Swal.fire({
+            title: 'Cart',
+            text: `Are you sure you want to buy all these products? ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#072DD6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ya',
+            cancelButtonText: 'tidak',
+        }).then((result) => {
+            if (result.value) {
+                let request = new XMLHttpRequest();
+                request.open("DELETE", `http://localhost:5201/Api/v1/Cart/${buyerNumber}`);
+                request.setRequestHeader('Authorization', `Bearer ${token}`)
+                request.send();
+                button.setAttribute('disable', 'disabled');
+                button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+                request.onload = () => {
+                    button.removeAttribute('disable');
+                    button.innerHTML = 'Purchase All';
+                    let result = JSON.parse(request.response);
+                    if (result.error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed",
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Succes',
+                            text: result.message
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+    function remove(productId, buyerNumber,shipperNumber){
+        let token = localStorage.getItem("token");
+        Swal.fire({
+            title: 'Cart',
+            text: `are you sure Remove this Product in the Cart ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#072DD6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ya',
+            cancelButtonText: 'tidak',
+        }).then((result) => {
+            if (result.value) {
+                let request = new XMLHttpRequest();
+                request.open("DELETE", `http://localhost:5201/Api/v1/Cart/${productId}/${buyerNumber}/${shipperNumber}`);
+                request.setRequestHeader('Authorization', `Bearer ${token}`);
+                request.send();
+                request.onload = () => {
+                    let result = JSON.parse(request.response);
+                    console.log(result);
+                    if (result.error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed",
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Succes',
+                            text: result.message
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+</script>

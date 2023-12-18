@@ -1,0 +1,117 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = TrollMarket.Persentation.Web
+build_property.RootNamespace = TrollMarket.Persentation.Web
+build_property.ProjectDir = C:\Users\Public\Fremwork.net\Aldy Nifratama\Aldy Nifratama_Troll Market_BC40\TrollMarket\src\TrollMarket.Persentation.Web\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Public\Fremwork.net\Aldy Nifratama\Aldy Nifratama_Troll Market_BC40\TrollMarket\src\TrollMarket.Persentation.Web
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Account/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Account/Insert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbnNlcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Auth/AccesDanied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxBY2Nlc0RhbmllZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Cart/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/History/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGlzdG9yeVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Home/DashboardAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNoYm9hcmRBZG1pbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Home/DashboardBuyer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNoYm9hcmRCdXllci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Home/DashboardSeller.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNoYm9hcmRTZWxsZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Merchandise/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVyY2hhbmRpc2VcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Merchandise/Insert.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVyY2hhbmRpc2VcSW5zZXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Merchandise/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVyY2hhbmRpc2VcVXBkYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/Auth/_FootAuth.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEF1dGhcX0Zvb3RBdXRoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/Auth/_HeaderAuth.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEF1dGhcX0hlYWRlckF1dGguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/Auth/_LayoutAuth.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEF1dGhcX0xheW91dEF1dGguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/_Foot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Gb290LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/_Footer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Gb290ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/_Head.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9IZWFkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shared/_Navbar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9OYXZiYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shipper/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hpcHBlclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/Shop/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Public/Fremwork.net/Aldy Nifratama/Aldy Nifratama_Troll Market_BC40/TrollMarket/src/TrollMarket.Persentation.Web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

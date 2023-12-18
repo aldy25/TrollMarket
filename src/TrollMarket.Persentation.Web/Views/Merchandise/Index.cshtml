@@ -1,0 +1,307 @@
+﻿@section breadCrumbs{
+        <span>Merchandise</span>
+}
+@section page{
+        <span>Merchandise</span>
+}
+@model MerchandiseIndexViewModel
+
+<div class="card m-b-30">
+    <div class="card-body">
+        <div class="button-items mt-2 mb-4">
+            <a style="color:white" asp-action="Add" asp-controller="Merchandise" type="button" class="btn btn-info waves-effect waves-light">Add New Product</a>
+        </div>
+        <div class="mt-2 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="1">No</t>
+                        <th>Action</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Discontinue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var no = 1;
+                    }
+                    @foreach (var row in Model.Merchandises)
+                    {
+                        <tr>
+                            <td>
+                                @no
+                            </td>
+                            <td>
+                                <a style="color:white" onclick="edit(@row.Id)" type="button" id="btnEdit" class="btn btn-primary">Edit</a>
+                                <button style="color:white" onclick="remove(@row.Id)" type="button" class="btn btn-danger">Delete</button>
+                                <button style="color:white" onclick="detail(@row.Id)" type="button" class="btn btn-info" id="btnInfo">Info</button>
+                                <button style="color:white" onclick="discontinue(@row.Id)" type="button" class="btn btn-secondary" @(row.Discontinue ? "disabled" : "")>Discontinue</button>
+                            </td>
+                            <td>
+                                @row.ProductName
+                            </td>
+                            <td>
+                                @row.Category
+                            </td>
+                            <td>
+                                @(row.Discontinue ? "Yes" : "No")
+                            </td>
+                        </tr>
+                        no++;
+                    }
+                    
+                </tbody>
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+
+                    @if (Model.Pagination.PageNumber == 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new { page = Model.Pagination.PageNumber - 1})">Previous</a>
+                        </li>
+                    }
+
+                    @for (int a = 1; a <= Model.Pagination.TotalPages; a++)
+                    {
+                        if (a == Model.Pagination.PageNumber)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    @a
+                                </span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("index",new { page = a})">@a</a></li>
+                        }
+                    }
+                    @if (Model.Pagination.PageNumber == Model.Pagination.TotalPages)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new {  page = Model.Pagination.PageNumber + 1})">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modalInfo" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog bounce animated">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Detail Info Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-8">
+                        <label id="name"></label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="category" class="col-sm-3 col-form-label">Category</label>
+                    <div class="col-sm-8">
+                        <label id="category">:</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-3 col-form-label">Description</label>
+                    <div class="col-sm-8">
+                        <label id="description">:</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="price" class="col-sm-3 col-form-label">Price</label>
+                    <div class="col-sm-8">
+                        <label id="price">:</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="discontinue" class="col-sm-3 col-form-label">Discontinue</label>
+                    <div class="col-sm-8">
+                        <label id="discontinue">:</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*end model*@
+
+<script>
+
+    (function(){
+        let close = document.querySelector(".close");
+        let modalInfo = document.querySelector("#modalInfo");
+        close.addEventListener('click', function(e){
+            modalInfo.classList.remove("show");
+            modalInfo.style = "";
+        })
+    }())
+    function detail(id) {
+        let token = localStorage.getItem("token");
+        let name = document.querySelector("#name");
+        let category = document.querySelector("#category");
+        let description = document.querySelector("#description");
+        let price = document.querySelector("#price");
+        let discontinue = document.querySelector("#discontinue");
+        let button = document.querySelector("#btnInfo");
+        let request = new XMLHttpRequest();
+        let url = `http://localhost:5201/Api/v1/Product/${id}`;
+        request.open('GET', url);
+        request.setRequestHeader('Authorization', `Bearer ${token}`);
+        request.send();
+
+        button.setAttribute('disable', 'disabled');
+        button.innerHTML = '<span>Loading </span><i class="fa fa-spin fa-spinner"></i>';
+        request.onload = () => {
+            button.removeAttribute('disable');
+            button.innerHTML = 'Info';
+            let result = JSON.parse(request.response);
+            let numberString = result.detail.price.toString(); // Ubah angka ke string
+            let splitNumber = numberString.split('').reverse().join(''); // Balik string angka
+            let ribuan = splitNumber.match(/\d{1,3}/g);
+            let formatted = ribuan.join('.').split('').reverse().join('');
+            name.textContent = `${result.detail.productName}`;
+            category.textContent = `${result.detail.category}`;
+            description.textContent = `${result.detail.description}`;
+            price.textContent = `Rp ${formatted}`;
+            discontinue.textContent = `${result.detail.discontinue ? "Yes": "No"}`;
+            $('#modalInfo').modal('show');
+        }
+    }
+    function edit(id){
+        let token = localStorage.getItem("token");
+        let button = document.querySelector("#btnEdit");
+        let request = new XMLHttpRequest();
+        let url = `http://localhost:5201/Api/v1/Product/CheckAvailableUpdateProduct/${id}`;
+        request.open('GET', url);
+        request.setRequestHeader('Authorization', `Bearer ${token}`);
+        request.send();
+        button.setAttribute('disable', 'disabled');
+        button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+        request.onload = () => {
+            button.removeAttribute('disable');
+            button.innerHTML = 'Edit';
+            let result = JSON.parse(request.response);
+            if (result.error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed",
+                    text: result.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }else{
+                window.location.href = `http://localhost:5115/Merchandise/Update/${id}`;
+            }
+        }
+    }
+    function remove(id) {
+        let token = localStorage.getItem("token");
+        Swal.fire({
+            title: 'Product',
+            text: `are you sure deleting this Prdouct ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#072DD6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ya',
+            cancelButtonText: 'tidak',
+        }).then((result) => {
+            if (result.value) {
+                let request = new XMLHttpRequest();
+                request.open("DELETE", `http://localhost:5201/Api/v1/Product/${id}`);
+                request.setRequestHeader('Authorization', `Bearer ${token}`);
+                request.send();
+                request.onload = () => {
+                    let result = JSON.parse(request.response);
+                    console.log(result);
+                    if (result.error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed",
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Succes',
+                            text: result.message
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+    function discontinue(id){
+        let token = localStorage.getItem("token");
+        Swal.fire({
+            title: 'Product',
+            text: `are you sure Discontinue this Prdouct ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#072DD6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ya',
+            cancelButtonText: 'tidak',
+        }).then((result) => {
+            if (result.value) {
+                let url = `http://localhost:5201/Api/v1/Product/${id}`;
+                let request = new XMLHttpRequest();
+                request.open('PATCH', url);
+                request.setRequestHeader("Content-Type", "application/json");
+                request.setRequestHeader('Authorization', `Bearer ${token}`);
+                request.send();
+                request.onload = () => {
+                    let result = JSON.parse(request.response);
+                    if (result.error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed",
+                            text: result.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Succes',
+                            text: result.message
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+</script>

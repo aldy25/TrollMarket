@@ -1,0 +1,120 @@
+﻿@using System.Security.Claims;
+@{
+    var role = User.FindFirst(ClaimTypes.Role)?.Value;
+    var username = User.FindFirst("Username")?.Value;
+}
+<div class="topbar-main">
+    <div class="container-fluid">
+
+        <!-- Logo container-->
+        <div class="logo">
+            <a asp-action="Index" asp-controller="Home" class="logo">
+                <img src="~/assets/images/logo.jpg" alt="" height="35" class="logo-large">
+                <span style="color: black;">  Troll Market</span>
+            </a>
+
+        </div>
+        <!-- End Logo container-->
+
+
+        <div class="menu-extras topbar-custom">
+
+            <ul class="list-inline float-right mb-0">
+
+
+
+                <!-- User-->
+                <li class="list-inline-item dropdown notification-list">
+                    <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="false" aria-expanded="false">
+                        <img src="~/assets/images/users/avatar.jpg" alt="user" class="rounded-circle">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                        <!-- item-->
+                        <div class="dropdown-item noti-title">
+                            <h5>Welcome @username</h5>
+                        </div>
+                        @if(role.Equals("Buyer") || role.Equals("Seller")){
+                            <a class="dropdown-item" asp-action="Profile" asp-controller="Account"><i class="mdi mdi-account-circle m-r-5 text-muted"></i> Profile</a>
+                        } 
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-settings m-r-5 text-muted"></i> Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-action="Logout" asp-controller="Auth"><i class="mdi mdi-logout m-r-5 text-muted"></i> Logout</a>
+                    </div>
+                </li>
+                <li class="menu-item list-inline-item">
+                    <!-- Mobile menu toggle-->
+                    <a class="navbar-toggle nav-link">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                    <!-- End mobile menu toggle-->
+                </li>
+
+            </ul>
+        </div>
+        <!-- end menu-extras -->
+
+        <div class="clearfix"></div>
+
+    </div> <!-- end container -->
+</div>
+<!-- end topbar-main -->
+<!-- MENU Start -->
+<div class="navbar-custom">
+    <div class="container-fluid">
+        <div id="navigation">
+            <!-- Navigation Menu-->
+            <ul class="navigation-menu">
+
+                @if(role.Equals("Buyer")){
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="Home"><i class="mdi mdi-home"></i>Home</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a asp-action="Profile" asp-controller="Account"><i class="mdi mdi-account-circle"></i>Profile</a>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="Shop"><i class="mdi mdi-shopping"></i>Shop</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="Cart"><i class="mdi mdi-cart"></i>My Cart</a>
+                    </li>
+
+                }else if (role.Equals("Seller"))
+                {
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="Home"><i class="mdi mdi-home"></i>Home</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a asp-action="Profile" asp-controller="Account"><i class="mdi mdi-account-circle"></i>Profile</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="Merchandise"><i class="mdi mdi-tag-multiple"></i>Merchandise</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="Home"><i class="mdi mdi-home"></i>Home</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="Shipper"><i class="mdi mdi-car"></i>Shipment</a>
+                    </li>
+
+                    <li class="has-submenu">
+                        <a asp-action="Add" asp-controller="Account"><i class="mdi mdi-account-box"></i>Admin</a>
+                    </li>
+                    <li class="has-submenu">
+                        <a asp-action="Index" asp-controller="History"><i class="mdi mdi-timelapse"></i>History</a>
+                    </li>
+                }
+            </ul>
+            <!-- End navigation menu -->
+        </div> <!-- end #navigation -->
+    </div> <!-- end container -->
+</div> <!-- end navbar-custom -->

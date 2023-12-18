@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <partial name="_Head" />
+</head>
+<body>
+    <!-- Loader -->
+    <div id="preloader"><div id="status"><div class="spinner"></div></div></div>
+
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <partial name="_Navbar" />
+    </header>
+    <!-- End Navigation Bar-->
+    <div class="wrapper">
+        <div class="container-fluid">
+            <!-- Page-Title -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group pull-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Troll Market</a></li>
+                                <li class="breadcrumb-item active">@RenderSection("breadCrumbs", required: true)</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title"> @RenderSection("page", required: true)</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title end breadcrumb -->
+            @RenderBody()
+        </div> <!-- end container -->
+    </div>
+    <!-- end wrapper -->
+    <!-- Footer -->
+    <partial name="_Footer" />
+    <!-- End Footer -->
+    <partial name="_Foot" />
+</body>
+</html>

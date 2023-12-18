@@ -1,0 +1,278 @@
+﻿@section breadCrumbs{
+    <span>Profile</span>
+}
+@section page{
+    <span>Profile</span>
+}
+@model AccountIndexProfileViewModel
+@using System.Security.Claims;
+@{
+    var id = User.FindFirst("Id")?.Value;
+}
+<div class="card m-b-30">
+    <div class="card-body">
+        <form class="mt-4">
+            <div class="form-group row col-12">
+                <div class="col-sm-2">
+                    Name
+                </div>
+                <div class="col-sm-6">
+                   @Model.Profile.Name
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-sm-2">
+                    Role
+                </div>
+                <div class="col-sm-6">
+                    @Model.Profile.Role
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-sm-2">
+                    Address
+                </div>
+                <div class="col-sm-6">
+                    @Model.Profile.Address
+                </div>
+            </div>
+            <div class="form-group row col-12">
+                <div class="col-sm-2">
+                    Balance
+                </div>
+                <div style="color:#2899ef" class="col-sm-2">
+                   @Model.Profile.Balannce.ToString("C")  
+                </div>
+                <div class="col-sm-2">
+                    @if(Model.Profile.Role.Equals("Buyer")){
+                        <a style="color:white; cursor: pointer;" onclick="plusBalance(@id)" class="btn btn-info btn-sm" data-toggle="modal" data-animation="bounce" data-target="#modalTambahBalance">Tambah Dana</a>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card m-b-30">
+    <div class="card-body">
+        <div class="mt-2 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Date</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Shipment</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int no = 1;}
+                    @foreach (var row in Model.TransactionHistory)
+                    {
+                        <tr>
+                            <td>
+                                @no
+                            </td>
+                            <td>
+                                @row.TransactionDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @row.ProductName
+                            </td>
+                            <td>
+                                @row.Quantity
+                            </td>
+                            <td>
+                                @row.Shipment
+                            </td>
+                            <td>
+                                @row.PriceTotal.ToString("C")
+                            </td>
+                        </tr>
+                        no++;
+                    }
+                </tbody>
+                <tfoot>
+                    <td></td>
+                    <td>Total</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                <td style="color:orangered">@Model.TotalPrice.ToString("C")</td>
+                </tfoot>
+
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+
+                    @if (Model.Pagination.PageNumber == 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new { page = Model.Pagination.PageNumber - 1})">Previous</a>
+                        </li>
+                    }
+
+                    @for (int a = 1; a <= Model.Pagination.TotalPages; a++)
+                    {
+                        if (a == Model.Pagination.PageNumber)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    @a
+                                </span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("index",new { page = a})">@a</a></li>
+                        }
+                    }
+                    @if (Model.Pagination.PageNumber == Model.Pagination.TotalPages)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new {  page = Model.Pagination.PageNumber + 1})">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+@*start modal Insert*@
+<div class="modal fade" id="modalTambahBalance" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  zoomIn animated">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Dana</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formInsert">
+                <input style="display:none" type="text" id="id">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="balance" class="col-sm-3 col-form-label">Jumlah Dana </label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="balance" required>
+                            <div class="invalid-feedback balance">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="payment" class="col-sm-3 col-form-label">Payment Method </label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="payment" required>
+                                <option value="">--Pilih--</option>
+                                <option value="BRI">Bank Bri</option>
+                                <option value="Indomaret">Indomaret</option>
+                                <option value="Alfamart">Alfamart</option>
+                                <option value="Dana">Dana</option>
+                            </select>
+                            <div class="invalid-feedback payment">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnsubmit">Tambah</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*end model*@
+
+<script>
+    (function(){
+       TopUpDana();
+    }())
+    function plusBalance(id){
+        let form = document.querySelector("#formInsert");
+        form.reset();
+        document.querySelector("#id").value=id;
+    }
+    function TopUpDana() {
+        let form = document.querySelector("#formInsert");
+        let token = localStorage.getItem("token");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            //DOM untuk mengambil value dari inputan
+            let id = document.querySelector("#id").value;
+            let balance = document.querySelector("#balance");
+            let payment = document.querySelector("#payment");
+            //DOM untuk hendle Response error
+            let errorbalance = document.querySelector(".balance");
+            let errorpayment = document.querySelector(".payment");
+
+            //button
+            let button = document.querySelector("#btnsubmit");
+            data = {
+                "Amount": balance.value.trim() !== '' ? balance.value : null,
+                "PaymentMethod": payment.value.trim() !== '' ? payment.value : null,
+            }
+            let url = `http://localhost:5201/Api/v1/Account/${id}`;
+            let request = new XMLHttpRequest();
+            request.open('PATCH', url);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader('Authorization',`Bearer ${token}`);
+            button.setAttribute('disable', 'disabled');
+            button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+            request.send(JSON.stringify(data));
+            request.onload = () => {
+                button.removeAttribute('disable');
+                button.innerHTML = 'Tambah';
+
+                let result = JSON.parse(request.response);
+                if (result.errors) {
+                    if (result.errors.Amount) {
+                        balance.classList.add("is-invalid");
+                        errorbalance.textContent = result.errors.Amount;
+                    } else {
+                        balance.classList.remove("is-invalid");
+                        errorbalance.textContent = "";
+                    }
+                    if (result.errors.PaymentMethod) {
+                        payment.classList.add("is-invalid");
+                        errorpayment.textContent = result.errors.PaymentMethod;
+                    } else {
+                        payment.classList.remove("is-invalid");
+                        errorpayment.textContent = "";
+                    }
+                } else {
+                    document.querySelector("#modalTambahBalance").classList.remove('show');
+                    document.querySelector("#modalTambahBalance").classList.add('hide');
+                    document.querySelector('.modal-backdrop').remove();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Succes',
+                        text: result.message
+
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                           location.reload();
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+</script>

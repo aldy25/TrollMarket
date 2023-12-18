@@ -1,0 +1,179 @@
+﻿@section breadCrumbs{
+    <span>Admin/Add</span>
+}
+@section page{
+    <span>Admin</span>
+}
+<div class="card m-b-30">
+    <div class="card-body">
+        <h4 class="mt-0 header-title">Added the New Admin</h4>
+        <p class="text-muted m-b-30 font-14">
+            warning: please enter Product data correctly
+        </p>
+        <form id="formInsert">
+            <div class="form-group row">
+                <label for="username" class="col-sm-2 col-form-label">Username <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input type="text" id="username" class="form-control" required>
+                    <div class="invalid-feedback username">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="password" class="col-sm-2 col-form-label">Password <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input type="password" id="password" class="form-control" required>
+                    <div class="invalid-feedback password">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="retypePassword" class="col-sm-2 col-form-label">Confirm Password <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input type="password" id="retypePassword" class="form-control" required>
+                    <div class="invalid-feedback retypePassword">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="btnInsert" class="btn btn-info waves-effect waves-light">
+                Save New Admin
+            </button>
+        </form>
+    </div>
+</div>
+<script>
+    (function () {
+        insertAdmin();
+        validatePassword();
+        matchPassword();
+    }())
+    function validatePassword() {
+        let passwordInput = document.querySelector('#password');
+        let passwordError = document.querySelector('.password');
+        let submitButton = document.querySelector('#btnInsert');
+        passwordInput.addEventListener('input', function () {
+            let password = passwordInput.value;
+            let uppercaseRegex = /[A-Z]/;
+            let digitRegex = /[0-9]/;
+            let uniqueCharRegex = /[^A-Za-z0-9]/;
+            let minLength = 8;
+            let hasUppercase = uppercaseRegex.test(password);
+            let hasDigit = digitRegex.test(password);
+            let hasUniqueChar = uniqueCharRegex.test(password);
+            let isLengthValid = password.length >= minLength;
+            passwordInput.classList.remove("is-invalid");
+            passwordError.textContent = "";
+            submitButton.removeAttribute('disabled');
+            if (!isLengthValid) {
+                passwordInput.classList.add("is-invalid");
+                passwordError.textContent = "Password must be at least 8 characters long.";
+                submitButton.setAttribute('disabled', 'disabled');
+            } else if (!hasUppercase) {
+                passwordInput.classList.add("is-invalid");
+                passwordError.textContent = "Password must contain at least one uppercase letter.";
+                submitButton.setAttribute('disabled', 'disabled');
+            } else if (!hasDigit) {
+                passwordInput.classList.add("is-invalid");
+                passwordError.textContent = "Password must contain at least one digit.";
+                submitButton.setAttribute('disabled', 'disabled');
+            } else if (!hasUniqueChar) {
+                passwordInput.classList.add("is-invalid");
+                passwordError.textContent = "Password must contain at least one unique character.";
+                submitButton.setAttribute('disabled', 'disabled');
+            }
+
+        });
+    }
+    function matchPassword() {
+        let password = document.querySelector("#password");
+        let retypePassword = document.querySelector("#retypePassword");
+        let errorretypePassword = document.querySelector(".retypePassword");
+        let submitButton = document.querySelector('#btnInsert');
+        retypePassword.addEventListener('input', function () {
+            retypePassword.classList.remove("is-invalid");
+            errorretypePassword.textContent = "";
+            submitButton.removeAttribute('disabled');
+            if (password.value !== retypePassword.value) {
+                retypePassword.classList.add("is-invalid");
+                errorretypePassword.textContent = "Retype Password does not match";
+                submitButton.setAttribute('disabled', 'disabled');
+            }
+        });
+    }
+    function insertAdmin() {
+        let token = localStorage.getItem("token");
+        let form = document.querySelector("#formInsert");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            //DOM untuk mengambil value dari inputan
+            let username = document.querySelector("#username");
+            let password = document.querySelector("#password");
+            let retypePassword = document.querySelector("#retypePassword");
+            let role = document.querySelector("#role");
+            //DOM untuk hendle Response error
+            let errorusername = document.querySelector(".username");
+            let errorpassword = document.querySelector(".password");
+            let errorretypePassword = document.querySelector(".retypePassword");
+
+            //button
+            let button = document.querySelector("#btnInsert");
+            data = {
+                "UserName": username.value.trim() !== '' ? username.value : null,
+                "Password": password.value.trim() !== '' ? password.value : null,
+                "RetypePassword": retypePassword.value.trim() !== '' ? retypePassword.value : null
+            }
+
+            let url = `http://localhost:5201/Api/v1/Account`;
+            let request = new XMLHttpRequest();
+            request.open('POST', url);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader('Authorization', `Bearer ${token}`)
+            button.setAttribute('disable', 'disabled');
+            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+            request.send(JSON.stringify(data));
+            request.onload = () => {
+                button.removeAttribute('disable');
+                button.innerHTML = 'Save New Admin';
+
+                let result = JSON.parse(request.response);
+                console.log(result);
+                if (result.errors) {
+                    if (result.errors.Username) {
+                        username.classList.add("is-invalid");
+                        errorusername.textContent = result.errors.Username;
+                    } else {
+                        username.classList.remove("is-invalid");
+                        errorusername.textContent = "";
+                    }
+                    if (result.errors.Password) {
+                        password.classList.add("is-invalid");
+                        errorpassword.textContent = result.errors.Password;
+                    } else {
+                        password.classList.remove("is-invalid");
+                        errorpassword.textContent = "";
+                    }
+                    if (result.errors.RetypePassword) {
+                        retypePassword.classList.add("is-invalid");
+                        errorretypePassword.textContent = result.errors.RetypePassword;
+                    } else {
+                        retypePassword.classList.remove("is-invalid");
+                        errorretypePassword.textContent = "";
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Succes',
+                        text: result.message
+
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.reset();
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+</script>

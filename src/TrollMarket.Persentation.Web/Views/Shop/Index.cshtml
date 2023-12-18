@@ -1,0 +1,307 @@
+﻿@section breadCrumbs{
+    <span>Shop</span>
+}
+@section page{
+    <span>Shop</span>
+}
+@model ShopIndexViewModel
+
+<div class="card m-b-30">
+    <div class="card-body">
+        <h4 class="mt-0 header-title">Search By</h4>
+        <div class="general-label">
+            <form class="form-inline" role="form" asp-action="index" method="get">
+                <div class="form-group ml-2">
+                    <label>Name</label>
+                    <input asp-for="ProductName" class="form-control ml-2" id="name" placeholder="Enter Name">
+                </div>
+                <div class="form-group ml-2">
+                    <label>Category</label>
+                    <input asp-for="Category" class="form-control ml-2" id="name" placeholder="Enter Category">
+                </div>
+                <div class="form-group ml-2">
+                    <label>Description</label>
+                    <input asp-for="Description" class="form-control ml-2" id="name" placeholder="Enter Description">
+                </div>
+                <button type="submit" class="btn btn-primary ml-2">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row" id="displayProduct">
+    @foreach (var row in Model.Products)
+    {
+        <div class="col-md-6 col-lg-6 col-xl-2 fadeIn">
+
+            <div class="card m-b-30">
+                <img style="cursor: pointer;" onclick="detail(@row.Id)" class="card-img-top img-fluid" src="assets/images/small/2.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h4 style="cursor: pointer;" onclick="detail(@row.Id)" class="card-title font-10 mt-0">@row.ProductName</h4>
+                    <p style="color:orangered" class="card-text">
+                        @(row.Price.ToString("C"))
+                    </p>
+                    <a style="color:white;" onclick="addCart(@row.Id)" class="btn btn-info waves-effect waves-light"><i class="mdi mdi-cart-outline"></i> Add to Cart</a>
+                </div>
+            </div>
+
+        </div>
+
+    }
+</div>
+<div class="row" style="justify-content:center; @(Model.Pagination.TotalPages ==1 ? "display:none" : "")">
+    <div class="card m-b-30">
+        <button style="color:white;" onclick="more('@Model.ProductName','@Model.Category','@Model.Description',@(Model.Pagination.PageNumber+1))" id="loadMore" class="btn btn-info waves-effect waves-light">load more... </button>
+    </div>
+</div>
+<div class="modal" id="modalInfo" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog bounce animated">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Detail Info Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="form-group row">
+                    <label for="productName" class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-8">
+                        <label id="productName"></label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="category" class="col-sm-3 col-form-label">Category</label>
+                    <div class="col-sm-8">
+                        <label id="category">:</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-3 col-form-label">Description</label>
+                    <div class="col-sm-8">
+                        <label id="description">:</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="price" class="col-sm-3 col-form-label">Price</label>
+                    <div class="col-sm-8">
+                        <label id="price">:</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*end model*@
+
+@*start modal Keranjang*@
+<div class="modal fade" id="modalKeranjang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  zoomIn animated">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Dana</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formKeranjang">
+                <input style="display:none" type="text" id="id">
+                <input style="display:none" type="text" id="buyerNumber" value="@Model.BuyerNumber">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="quantity" class="col-sm-3 col-form-label">Quantity</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="quantity" required>
+                            <div class="invalid-feedback quantity">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="shipment" class="col-sm-3 col-form-label">Shipment </label>
+                        <div class="col-sm-8">
+                            <select style="width:100%;" class="form-control" id="shipment" required>
+                                <option value="">--Pilih--</option>
+                                @foreach(var row in Model.Shippers){
+                                    <option value="@row.ShipperNumber">@row.ShipperName</option>
+                                }
+                            </select>
+                            <div class="invalid-feedback shipment">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnsubmit">Tambah Ke Keranjang</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*end model*@
+
+<script>
+    (function () {
+        const sr = ScrollReveal({
+            duration: 1000,
+            distance: '30px',
+            delay: 300,
+            origin: 'bottom',
+            reset: true
+        });
+        const animatedElements = document.querySelectorAll('.fadeIn');
+        sr.reveal(animatedElements);
+        insertProductToCart();
+        $('#shipment').select2({
+            dropdownParent: $('#modalKeranjang')
+        });
+    }());
+    function addCart(id){
+        let idProduct = document.querySelector("#id");
+        idProduct.value = id;
+        $('#modalKeranjang').modal('show');
+    }
+    function insertProductToCart(){
+        let token = localStorage.getItem("token");
+        let form = document.querySelector("#formKeranjang");
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            //DOM untuk mengambil value dari inputan
+            let idProduct = document.querySelector("#id").value;
+            let buyerNumber = document.querySelector("#buyerNumber").value;
+            let quantity = document.querySelector("#quantity");
+            let shipment = document.querySelector("#shipment");
+            //DOM untuk hendle Response error
+            let errorquantity = document.querySelector(".quantity");
+            let errorshipment = document.querySelector(".shipment");
+            //button
+            let button = document.querySelector("#btnsubmit");
+            data = {
+                "productId": idProduct,
+                "buyerNumber": buyerNumber,
+                "shipperNumber": shipment.value.trim() !== '' ? shipment.value : null,
+                "quantity": quantity.value.trim() !== '' ? quantity.value : null,
+            }
+            console.log(data);
+            let url = `http://localhost:5201/Api/v1/Cart`;
+            let request = new XMLHttpRequest();
+            request.open('POST', url);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.setRequestHeader('Authorization', `Bearer ${token}`);
+            button.setAttribute('disable', 'disabled');
+            button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+            request.send(JSON.stringify(data));
+            request.onload = () => {
+                button.removeAttribute('disable');
+                button.innerHTML = 'Tambah Ke Keranjang';
+                let result = JSON.parse(request.response);
+                if (result.errors) {
+                    if (result.errors.ShipperNumber) {
+                        shipment.classList.add("is-invalid");
+                        errorshipment.textContent = result.errors.ShipperNumber;
+                    } else {
+                        shipment.classList.remove("is-invalid");
+                        errorshipment.textContent = "";
+                    }
+                    if (result.errors.Quantity) {
+                        quantity.classList.add("is-invalid");
+                        errorquantity.textContent = result.errors.Quantity;
+                    } else {
+                        quantity.classList.remove("is-invalid");
+                        errorquantity.textContent = "";
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Succes',
+                        text: result.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $('#modalKeranjang').modal('hide');
+                    form.reset();
+                    location.reload();
+                }
+            }
+        });
+    }
+    function detail(id) {
+        let token = localStorage.getItem("token");
+        let name = document.querySelector("#productName");
+        let category = document.querySelector("#category");
+        let description = document.querySelector("#description");
+        let price = document.querySelector("#price");
+        let request = new XMLHttpRequest();
+        let url = `http://localhost:5201/Api/v1/Product/${id}`;
+        request.open('GET', url);
+        request.setRequestHeader('Authorization', `Bearer ${token}`);
+        request.send();
+        request.onload = () => {
+            let result = JSON.parse(request.response);
+            console.log(name);
+            let numberString = result.detail.price.toString();
+            let splitNumber = numberString.split('').reverse().join(''); 
+            let ribuan = splitNumber.match(/\d{1,3}/g);
+            let formatted = ribuan.join('.').split('').reverse().join('');
+            name.textContent = `${result.detail.productName}`;
+
+            category.textContent = `${result.detail.category}`;
+            description.textContent = `${result.detail.description}`;
+            price.textContent = `Rp ${formatted}`;
+            $('#modalInfo').modal('show');
+        }
+    }
+    function more(productName, category, description, page) {
+        let token = localStorage.getItem("token");
+        const sr = ScrollReveal({
+            duration: 1000,
+            distance: '30px',
+            delay: 300,
+            origin: 'bottom',
+            reset: true
+        });
+        let button = document.querySelector("#loadMore");
+        let displayProduct = document.querySelector("#displayProduct");
+        let request = new XMLHttpRequest();
+        let url = `http://localhost:5201/Api/v1/Shop?productName=${productName}&category=${category}&description=${description}&page=${page}`;
+        request.open('GET', url);
+        request.setRequestHeader('Authorization', `Bearer ${token}`);
+        request.send();
+        button.setAttribute('disabled', 'disabled');
+        button.innerHTML = '<i class="fa fa-spin fa-spinner"></i> <span>Loading...</span>';
+        request.onload = () => {
+            button.removeAttribute('disabled');
+            button.innerHTML = 'load more...';
+            let result = JSON.parse(request.response);
+            if (result.detail.loadMore) {
+                button.setAttribute("onclick", `more('${productName}', '${category}', '${description}', ${page + 1})`);
+            } else {
+                button.innerHTML = 'All products have been displayed';
+                button.style.pointerEvents = 'none';
+            }
+            if (result.detail.products.length > 0) {
+                result.detail.products.forEach((row, index) => {
+                    displayProduct.innerHTML +=
+                        `
+                                         <div class="col-md-6 col-lg-6 col-xl-2 fadeIn">
+                                        <div class="card m-b-30">
+                                            <img style="cursor: pointer;" onclick="detail(${row.id})" class="card-img-top img-fluid" src="assets/images/small/2.jpg" alt="Card image cap">
+                                            <div class="card-body">
+                                                <h4 style="cursor: pointer;" onclick="detail(${row.id})" class="card-title font-10 mt-0">${row.productName}</h4>
+                                                <p style="color:orangered" class="card-text">
+                                                    ${row.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                                                </p>
+                                                <a href="#" class="btn btn-info waves-effect waves-light"><i class="mdi mdi-cart-outline"></i> Add to Cart</a>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                });
+
+                const animatedElements = document.querySelectorAll('.fadeIn');
+                sr.reveal(animatedElements);
+            } else {
+                button.innerHTML = 'All products have been displayed';
+                button.style.pointerEvents = 'none';
+            }
+        }
+    }
+</script>

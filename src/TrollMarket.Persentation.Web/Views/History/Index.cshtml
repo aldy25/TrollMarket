@@ -1,0 +1,159 @@
+﻿@section breadCrumbs{
+    <span>History</span>
+}
+@section page{
+    <span>History</span>
+}
+@model HistoryIndexViewModel
+
+<div class="card m-b-30">
+    <div class="card-body">
+        <h4 class="mt-0 header-title">Search By</h4>
+        <div class="general-label">
+            <form class="form-inline" role="form" asp-action="index" method="get">
+                <div class="form-group ml-2">
+                    <label class="col-form-label mr-4 ml-2">Seller</label>
+                    <select id="seller" class="form-control ml-2" asp-for="SellerNumber">
+                        <option value="">--pilih--</option>
+                        @foreach(var seller in Model.Sellers){
+                            <option value="@seller.SellerNumber">@seller.SellerName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group ml-2">
+                    <label class="mr-4 ml-2">Buyer</label>
+                    <select id="buyer" class="form-control ml-2" asp-for="BuyerNumber">
+                        <option value="">--pilih--</option>
+                        @foreach (var buyer in Model.Buyers)
+                        {
+                            <option value="@buyer.BuyerNumber">@buyer.BuyerName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group ml-2">
+                    <button type="submit" class="btn btn-primary btn-sm ml-2">Search</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card m-b-30">
+    <div class="card-body">
+        <div class="mt-2 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Date</th>
+                        <th>Seller</th>
+                        <th>Buyer</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Shipment</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int no= 1;}
+                    @foreach (var row in Model.Orders)
+                    {
+
+                        <tr>
+                            <td>
+                                @no
+                            </td>
+                            <td>
+                                @row.Date.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @row.SellerName
+                            </td>
+                            <td>
+                                @row.BuyerName
+                            </td>
+                            <td>
+                                @row.ProductName
+                            </td>
+                            <td>
+                                @row.Quantity
+                            </td>
+                            <td>
+                                @row.Shipment
+                            </td>
+                            <td>
+                                @row.TotalPrice.ToString("C")
+                            </td>
+                        </tr>
+                        no++;
+                    }
+                </tbody>
+                <tfoot>
+                <td>Total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="color:orangered">@Model.TotalTransactionCosts.ToString("C")</td>
+                </tfoot>
+                <hr>
+
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+
+                    @if (Model.Pagination.PageNumber == 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new { page = Model.Pagination.PageNumber - 1, sellerNumber = Model.SellerNumber, buyerNumber= Model.BuyerNumber})">Previous</a>
+                        </li>
+                    }
+
+                    @for (int a = 1; a <= Model.Pagination.TotalPages; a++)
+                    {
+                        if (a == Model.Pagination.PageNumber)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    @a
+                                </span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("index",new { page = a,sellerNumber = Model.SellerNumber, buyerNumber= Model.BuyerNumber})">@a</a></li>
+                        }
+                    }
+                    @if (Model.Pagination.PageNumber == Model.Pagination.TotalPages)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("index",new {  page = Model.Pagination.PageNumber + 1,sellerNumber = Model.SellerNumber, buyerNumber= Model.BuyerNumber})">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script>
+    (function(){
+        $('#buyer').select2();
+        $('#seller').select2();
+    }())
+
+</script>
