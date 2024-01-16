@@ -290,7 +290,7 @@
                                                 <p style="color:orangered" class="card-text">
                                                     ${row.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                                                 </p>
-                                                <a href="#" class="btn btn-info waves-effect waves-light"><i class="mdi mdi-cart-outline"></i> Add to Cart</a>
+                                                    <a style="color: white;"  onclick="addCart(${row.id})" class="btn btn-info waves-effect waves-light"><i class="mdi mdi-cart-outline"></i> Add to Cart</a>
                                             </div>
                                         </div>
                                     </div>`;
